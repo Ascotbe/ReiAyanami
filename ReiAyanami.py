@@ -24,7 +24,7 @@ class ThreadPool:  # 线程池，适用于单个插件
         self.ThreaList.append(threading.Thread(target=plugin,kwargs=kwargs))
 
     def Start(self,ThreadNumber):
-        print("\033[32m[ + ] 已经生成"+str(len(self.ThreaList))+"条内容正在多线程中执行\033[0m")
+        print("\033[32m[ + ] "+str(len(self.ThreaList))+"pieces of content have been generated and are being executed in multiple threads\033[0m")
         for t in self.ThreaList:  # 开启列表中的多线程
             t.start()
             while True:
@@ -82,13 +82,14 @@ def PortHandling(PortInformation,PortType):#进行正则匹配处理
                 if Port!=""and int(Port)<=65535:
                     PortLists.append(Port)
     except Exception as e:
-        print("\033[31m[ ! ] 请输入正确端口内容！\033[0m")
+        print("\033[31m[ ! ] Please enter the correct port content!\033[0m")
 
 def Banner():
     end="\033[0m"
     red = "\033[25;31m"
     cyan = "\033[25;36m"
-    header='''{}
+
+    LinuxHeader='''{}
          ██▀███  ▓█████  ██▓    ▄▄▄     ▓██   ██▓ ▄▄▄       ███▄    █  ▄▄▄       ███▄ ▄███▓ ██▓
         ▓██ ▒ ██▒▓█   ▀ ▓██▒   ▒████▄    ▒██  ██▒▒████▄     ██ ▀█   █ ▒████▄    ▓██▒▀█▀ ██▒▓██▒
         ▓██ ░▄█ ▒▒███   ▒██▒   ▒██  ▀█▄   ▒██ ██░▒██  ▀█▄  ▓██  ▀█ ██▒▒██  ▀█▄  ▓██    ▓██░▒██▒
@@ -101,7 +102,17 @@ def Banner():
                                          ░ ░
                                                                {}     {} by:ascotbe  version:0.1 {}
             '''.format(cyan,end,red,end)
-    print(header)
+    WindowsHeader=u'''{}
+    
+                                Welcome ReiAyanami
+    
+    {}                                        {} by:ascotbe  version:0.1 {}
+            '''.format(cyan,end,red,end)
+    if sys.platform == "win32" or sys.platform == "cygwin":
+        print(WindowsHeader)
+    elif sys.platform == "linux" or sys.platform == "darwin":
+        print(LinuxHeader)
+
 if __name__ == '__main__':
     args = parser.parse_args()
     IpTarget = args.Target
@@ -123,38 +134,38 @@ if __name__ == '__main__':
         OutputFile="port.txt"
     #对目标进行处理
     if IpTarget==None and ReadFile==None:
-        print("\033[31m[ ! ] 未输入扫描IP信息！\033[0m")
+        print("\033[31m[ ! ] Scanning IP information is not entered!\033[0m")
         sys.exit(0)
     elif IpTarget!=None and ReadFile!=None:
-        print("\033[31m[ ! ] 只能输入一种类型的IP方式！\033[0m")
+        print("\033[31m[ ! ] Only one type of IP method can be entered!\033[0m")
         sys.exit(0)
     elif IpTarget==None and ReadFile!=None:
         with open(ReadFile, 'r') as f:
             for line in f.readlines():
                 if line.strip() not in IpLists:#剔除重复IP
                     IpLists.append(line.strip())  # 把末尾的'\n'删掉
-            print("\033[32m[ + ] 扫描ip数量：" + str(len(IpLists)) + "\033[0m")  # IP个数有多少
+            print("\033[32m[ + ] Number of scanned ip:" + str(len(IpLists)) + "\033[0m")  # IP个数有多少
     elif IpTarget!=None and ReadFile==None:
         from IPy import IP#需要导入包，如果是红蓝对抗在不动别人机器的情况下推荐不适用该方式
         ip = IP(IpTarget)  # 后面批量生成C段扫描会用到
-        print("\033[32m[ + ] 扫描ip数量：" + str(ip.len()) + "\033[0m")  # IP个数有多少
+        print("\033[32m[ + ] Number of scanned ip:" + str(ip.len()) + "\033[0m")  # IP个数有多少
         for x in ip:
             IpLists.append(x)
 
     if PortListInformation==None and PortRangeInformation==None:#默认默认扫描端口信息
         PortLists=DefaultList
-        print("\033[32m[ + ] 正在对默认端口" + str(PortLists) + "扫描\033[0m")
+        print("\033[32m[ + ] Scanning the default port" + str(PortLists) + "\033[0m")
     elif PortListInformation!=None and PortRangeInformation!=None:#都不等于空的情况
-        print("\033[31m[ ! ] 只能输入一种格式端口，请使用-h来查看帮助文档！\033[0m")
+        print("\033[31m[ ! ] Only one format port can be entered, please use -h to view the help file!\033[0m")
         sys.exit(0)
     elif PortListInformation == None and PortRangeInformation != None:#输入范围型端口
         PortType=1
         PortHandling(PortRangeInformation, PortType)  # 放入列表中进行处理
-        print("\033[32m[ + ] 正在对定制端口" + str(PortLists) + "扫描\033[0m")
+        print("\033[32m[ + ] Scanning the default port" + str(PortLists) + "\033[0m")
     elif PortListInformation != None and PortRangeInformation == None:#输入字典型端口
         PortType=2
         PortHandling(PortListInformation,PortType)#放入列表中进行处理
-        print("\033[32m[ + ] 正在对定制端口" + str(PortLists) + "扫描\033[0m")
+        print("\033[32m[ + ] Scanning the default port" + str(PortLists) + "\033[0m")
 
 
     Main()
