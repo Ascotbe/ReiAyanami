@@ -12,7 +12,7 @@
 这是一个快速端口发现扫描器，可以帮助红队在内网机器上快速进行扫描，适用场景：
 
 - 没有任何代码环境以及未安装Nmap并且无法出网
-- 演戏环境禁止安装任何东西
+- 演习环境禁止安装任何东西
 - 只有Python代码环境并且机器不能出网（该环境如果要使用Python版禁止使用-t方式，请使用-r方式
 
 
@@ -61,7 +61,7 @@ pyinstaller -F ReiAyanami.py
 
 ### :warning:免责声明
 
-在原有的[协议](https://github.com/Ascotbe/Medusa/blob/master/LICENSE)中追加以下内容：
+在原有的[协议](https://github.com/Ascotbe/ReiAyanami/blob/master/LICENSE)中追加以下内容：
 
 - 本项目禁止进行未授权商业用途
 - 本项目仅面向**合法授权**的企业安全建设行为，在使用本项目进行检测时，您应确保该行为符合当地的法律法规，并且已经取得了足够的授权。
